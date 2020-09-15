@@ -12,7 +12,7 @@ namespace HatTeslaDisable_EXILED2
     {
         private static readonly Lazy<HatTeslaDisable> LazyInstance = new Lazy<HatTeslaDisable>(valueFactory: () => new HatTeslaDisable());
         static public HatTeslaDisable instance => LazyInstance.Value;
-        public override PluginPriority Priority { get; } = PluginPriority.Medium;
+        public override PluginPriority Priority { get; } = PluginPriority.Low;
         private HatTeslaDisable()
         {
 
@@ -21,10 +21,12 @@ namespace HatTeslaDisable_EXILED2
         {
             RegisterEvents();
         }
-
+        Handlers.Player player;
         private void RegisterEvents()
         {
-            throw new NotImplementedException();
+            player = new Handlers.Player();
+            Exiled.Events.Handlers.Player.TriggeringTesla += player.OnTesla;
+            Exiled.Events.Handlers.Player.Hurting += player.OnHurt;
         }
 
         public override void OnDisabled()
@@ -34,7 +36,12 @@ namespace HatTeslaDisable_EXILED2
 
         private void UnregisterEvents()
         {
-            throw new NotImplementedException();
+            Exiled.Events.Handlers.Player.TriggeringTesla -= player.OnTesla;
+            Exiled.Events.Handlers.Player.Hurting -= player.OnHurt;
+        }
+        public override void OnReloaded()
+        {
+            
         }
     }
 }
